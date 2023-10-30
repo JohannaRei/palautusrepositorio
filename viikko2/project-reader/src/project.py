@@ -13,6 +13,7 @@ class Project:
         return '\n- ' + '\n- '.join(items)
 
     def __str__(self):
+        print('muutos gittitehtäviä varten')
         return (
             f"Name: {self.name}"
             f"\nDescription: {self.description or '-'}"
