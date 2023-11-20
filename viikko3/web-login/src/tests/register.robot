@@ -6,7 +6,7 @@ Test Setup  Go To Register Page
 
 *** Test Cases ***
 Register With Valid Username And Password
-    Set Username  johanna
+    Set Username  joha
     Set Password  johanna123
     Set Password Confirmation  johanna123
     Click Button  Register
@@ -21,14 +21,14 @@ Register With Too Short Username And Valid Password
 
 Register With Valid Username And Invalid Password
     # salasana ei sisällä halutunlaisia merkkejä
-    Set Username  johanna
+    Set Username  johan
     Set Password  pitkasalasana
     Set Password Confirmation  pitkasalasana
     Click Button  Register
     Registration Should Fail With Message  Password must contain non-letter characters
 
 Register With Valid Username And Too Short Password
-    Set Username  johanna
+    Set Username  johann
     Set Password  lyhyt!
     Set Password Confirmation  lyhyt!
     Click Button  Register
@@ -40,6 +40,32 @@ Register With Nonmatching Password And Password Confirmation
     Set Password Confirmation  johanna234
     Click Button  Register
     Registration Should Fail With Message  Password doesn't match confirmation
+
+Login After Successful Registration
+    Set Username  johannar
+    Set Password  johanna123
+    Set Password Confirmation  johanna123
+    Click Button  Register
+    Click Link  Continue to main page
+    Click Button  Logout
+    Login Page Should Be Open
+    Set Username  johannar
+    Set Password  johanna123
+    Click Button  Login
+    Main Page Should Be Open
+
+Login After Failed Registration
+    Set Username  reiska
+    Set Password  r
+    Set Password Confirmation  r
+    Click Button  Register
+    Registration Should Fail With Message  Password must be at least 8 characters
+    Click Link  Login
+    Login Page Should Be Open
+    Set Username  reiska
+    Set Password  r
+    Click Button  Login
+    Login Should Fail With Message  Invalid username or password
 
 *** Keywords ***
 Go To Register Page
@@ -64,4 +90,9 @@ Registration Should Succeed
 Registration Should Fail With Message
     [Arguments]  ${message}
     Register Page Should Be Open
+    Page Should Contain  ${message}
+
+Login Should Fail With Message
+    [Arguments]  ${message}
+    Login Page Should Be Open
     Page Should Contain  ${message}
